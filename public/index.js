@@ -17,7 +17,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const instructionTextArea = document.getElementById("instructions-text");
     const addInstructionBtn = document.getElementById("add-instruction");
 
+    const imgInput = document.getElementById("image-input");
+
     const submitBtn = document.getElementById("submit");
+
 
 
     // Add ingredients to a list
@@ -32,12 +35,45 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // When recipe is submitted, send to server
     submitBtn.addEventListener("click", async () => {
+
+        // Src: https://stackoverflow.com/questions/25204621/send-image-to-server-using-file-input-type
+        // src: https://developer.mozilla.org/en-US/docs/Web/API/FormData/append
+        // Src: https://stackoverflow.com/questions/12989442/uploading-multiple-files-using-formdata
+        const imgData = new FormData();
+        const files = imgInput.files;
+        for (const f of files) {
+            imgData.append("images", f);
+        }
+
+        // Send data to server
         sendData("post", recName.value);
+        sendImgData(imgData);
+
+        // Clear temp lists
         listOfIngredients = [];
         listOfInstructions = [];
     });
 
 });
+
+async function sendImgData(imgData) {
+    try {
+        const res = await fetch("/images", {
+            method: "POST",
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            body: { img: imgData }
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            console.log(data);
+        }
+    } catch (error) {
+        console.error("Error: ", error);
+    }
+}
 
 async function sendData(method, foodName) {
     try {
@@ -52,6 +88,7 @@ async function sendData(method, foodName) {
             });
 
         } else if (method === "post") {
+
             const resBody = JSON.stringify({
                 name: foodName,
                 instructions: listOfInstructions,
@@ -65,6 +102,7 @@ async function sendData(method, foodName) {
                 },
                 body: resBody,
             });
+
         }
 
         // Data is added to the frontend from response json

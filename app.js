@@ -46,6 +46,17 @@ server.post("/recipe/", function(req, res, next) {
 
 });
 
+
+server.post("/images", function(req, res, next) {
+    try {
+        res.status(200).json({ msg: "Hi" });
+
+    } catch (error) {
+        console.error("Error produced from recipe path: ", error);
+    }
+
+});
+
 server.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}...`);
 });
