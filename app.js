@@ -10,8 +10,7 @@ const PORT = 3000;
 
 
 server.get("/", function(req, res, next) {
-    console.log("Hello There");
-    res.send()
+    res.send("Hello there");
 });
 
 server.get("/recipe/:food", function(req, res, next) {
@@ -19,7 +18,6 @@ server.get("/recipe/:food", function(req, res, next) {
 
         const food = req.params.food;
 
-        console.log(`Food given: ${food}`);
 
         res.status(200).json({ name: `${food}`, instructions: "Just DO IT", ingredients: "What ever you have" });
     } catch (error) {
@@ -36,8 +34,6 @@ server.post("/recipe/", function(req, res, next) {
             "ingredients": req.body.ingredients,
             "instructions": req.body.instructions
         };
-
-        console.log(`Recipe given: ${recipe}`);
 
         res.status(200).json(recipe);
     } catch (error) {

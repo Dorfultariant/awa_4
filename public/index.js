@@ -68,7 +68,6 @@ async function sendImgData(imgData) {
 
         if (res.ok) {
             const data = await res.json();
-            console.log(data);
         }
     } catch (error) {
         console.error("Error: ", error);
