@@ -63,7 +63,7 @@ async function sendImgData(imgData) {
             headers: {
                 "Content-Type": "multipart/form-data"
             },
-            body: { img: imgData }
+            body: imgData
         });
 
         if (res.ok) {
