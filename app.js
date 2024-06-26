@@ -4,6 +4,7 @@ const express = require("express");
 const server = express();
 
 server.use(express.static("public"));
+server.use(express.json());
 
 const PORT = 3000;
 
@@ -27,6 +28,23 @@ server.get("/recipe/:food", function(req, res, next) {
 
 });
 
+
+server.post("/recipe/", function(req, res, next) {
+    try {
+        const recipe = {
+            "name": req.body.name,
+            "ingredients": req.body.ingredients,
+            "instructions": req.body.instructions
+        };
+
+        console.log(`Recipe given: ${recipe}`);
+
+        res.status(200).json(recipe);
+    } catch (error) {
+        console.error("Error produced from recipe path: ", error);
+    }
+
+});
 
 server.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}...`);
